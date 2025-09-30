@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DSA: Sternenklingen</title>
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <div id="game-root">
+    <header>
+      <h1>Das Schwarze Auge: Sternenklingen</h1>
+      <p class="subtitle">Ein browserbasiertes Retro-RPG-Abenteuer</p>
+    </header>
+    <main>
+      <section id="view-section">
+        <div id="three-container"></div>
+        <div id="overlay-info">
+          <div id="location-name"></div>
+          <div id="travel-mode"></div>
+        </div>
+      </section>
+      <section id="hud">
+        <div id="party-panel" class="panel"></div>
+        <div id="log-panel" class="panel">
+          <h2>Chronik</h2>
+          <div id="log-entries"></div>
+        </div>
+        <div id="actions-panel" class="panel">
+          <h2>Aktionen</h2>
+          <div id="action-buttons"></div>
+        </div>
+        <div id="quest-panel" class="panel">
+          <h2>Aufgaben</h2>
+          <ul id="quest-list"></ul>
+        </div>
+      </section>
+    </main>
+    <footer>
+      <p>
+        Steuerung: Pfeiltasten / WASD zum Bewegen · <button id="rest-button">Rasten</button>
+        · <button id="camp-button">Lager aufschlagen</button>
+      </p>
+    </footer>
+  </div>
+  <script type="module" src="./src/main.js"></script>
+</body>
+</html>
