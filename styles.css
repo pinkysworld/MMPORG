@@ -1,0 +1,180 @@
+:root {
+  font-family: "Segoe UI", system-ui, -apple-system, BlinkMacSystemFont,
+    "Roboto", sans-serif;
+  color: #f8f8f8;
+  background: radial-gradient(circle at top, #22334a, #0d1117 60%);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  overflow: hidden;
+  display: grid;
+}
+
+#world {
+  grid-area: 1 / 1;
+}
+
+#ui {
+  grid-area: 1 / 1;
+  pointer-events: none;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  mix-blend-mode: difference;
+}
+
+header h1 {
+  margin: 0;
+  font-size: clamp(1.8rem, 3vw, 2.8rem);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+header p {
+  margin: 0.4rem 0 0;
+  max-width: 32rem;
+  line-height: 1.5;
+}
+
+.panel {
+  pointer-events: auto;
+  background: rgba(7, 13, 18, 0.78);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  padding: 1rem 1.25rem;
+  margin-top: 1rem;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+  backdrop-filter: blur(12px);
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.hidden {
+  display: none !important;
+}
+
+#interaction-panel.visible {
+  display: block;
+  transform: translateY(0);
+  opacity: 1;
+}
+
+#interaction-title {
+  margin: 0 0 0.25rem;
+}
+
+#interaction-description {
+  margin: 0 0 0.75rem;
+  line-height: 1.4;
+}
+
+#collect-button {
+  border: none;
+  border-radius: 999px;
+  padding: 0.5rem 1.25rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  background: linear-gradient(135deg, #ff8a3d, #ff3d6f);
+  color: white;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+#collect-button:active {
+  transform: scale(0.96);
+}
+
+#inventory {
+  max-width: min(90vw, 320px);
+}
+
+#inventory h2 {
+  margin: 0 0 0.75rem;
+}
+
+#inventory-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.45rem;
+}
+
+#inventory-list li {
+  display: flex;
+  justify-content: space-between;
+  font-family: "JetBrains Mono", "Fira Code", monospace;
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 8px;
+  padding: 0.45rem 0.6rem;
+}
+
+footer {
+  font-size: 0.9rem;
+  max-width: 40rem;
+}
+
+.key {
+  font-family: "JetBrains Mono", monospace;
+  background: rgba(255, 255, 255, 0.18);
+  border-radius: 6px;
+  padding: 0.08rem 0.4rem;
+}
+
+#help-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(6, 11, 18, 0.75);
+  display: grid;
+  place-items: center;
+  z-index: 10;
+}
+
+.help-content {
+  background: rgba(9, 16, 24, 0.9);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  padding: 2rem 2.5rem;
+  max-width: 480px;
+  color: #d9e7ff;
+  box-shadow: 0 25px 70px rgba(0, 0, 0, 0.45);
+}
+
+.help-content h2 {
+  margin-top: 0;
+}
+
+.help-content ul {
+  margin: 1rem 0 1.5rem;
+  padding-left: 1.2rem;
+  line-height: 1.5;
+}
+
+.help-content button {
+  pointer-events: auto;
+  background: #3f8cff;
+  border: none;
+  border-radius: 8px;
+  color: white;
+  font-weight: 600;
+  padding: 0.6rem 1.4rem;
+  cursor: pointer;
+}
+
+@media (max-width: 768px) {
+  #ui {
+    padding: 1rem;
+  }
+
+  header p,
+  footer {
+    font-size: 0.85rem;
+  }
+}
