@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MMORPG World</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div id="ui">
+      <header>
+        <h1>Frontier Valley</h1>
+        <p>Explore, befriend animals, and gather resources.</p>
+      </header>
+      <section id="interaction-panel" class="panel hidden">
+        <h2 id="interaction-title"></h2>
+        <p id="interaction-description"></p>
+        <button id="collect-button">Collect Resource</button>
+      </section>
+      <section id="inventory" class="panel">
+        <h2>Inventory</h2>
+        <ul id="inventory-list"></ul>
+      </section>
+      <footer>
+        <p>
+          Left click animals to interact • Scroll to zoom • Drag to look around •
+          Press <span class="key">H</span> to toggle help.
+        </p>
+      </footer>
+    </div>
+    <div id="help-overlay" class="hidden">
+      <div class="help-content">
+        <h2>World Guide</h2>
+        <ul>
+          <li>Follow the campfire smoke to find the settlement.</li>
+          <li>Animals provide unique resources once every few seconds.</li>
+          <li>
+            Trees and rocks are harvestable landmarks for future expansions of
+            the world.
+          </li>
+        </ul>
+        <button id="close-help">Close</button>
+      </div>
+    </div>
+    <div id="world"></div>
+    <script type="module" src="main.js"></script>
+  </body>
+</html>
