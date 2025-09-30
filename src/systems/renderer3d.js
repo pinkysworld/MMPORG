@@ -14,6 +14,8 @@ export class Renderer3D {
 
     this.renderer = new THREE.WebGLRenderer({ antialias: true });
     this.renderer.setPixelRatio(window.devicePixelRatio);
+    this.renderer.domElement.style.width = '100%';
+    this.renderer.domElement.style.height = '100%';
     this.container.appendChild(this.renderer.domElement);
 
     this.tileGroup = new THREE.Group();
@@ -25,6 +27,10 @@ export class Renderer3D {
     this.setupLights();
     this.handleResize();
     window.addEventListener('resize', () => this.handleResize());
+    if (typeof ResizeObserver !== 'undefined') {
+      this.resizeObserver = new ResizeObserver(() => this.handleResize());
+      this.resizeObserver.observe(this.container);
+    }
   }
 
   setupLights() {
@@ -131,9 +137,11 @@ export class Renderer3D {
 
   handleResize() {
     if (!this.container || !this.renderer) return;
-    const { clientWidth, clientHeight } = this.container;
-    this.renderer.setSize(clientWidth, clientHeight);
-    this.camera.aspect = clientWidth / clientHeight;
+    const bounds = this.container.getBoundingClientRect();
+    const width = Math.max(1, Math.floor(bounds.width));
+    const height = Math.max(1, Math.floor(bounds.height));
+    this.renderer.setSize(width, height, false);
+    this.camera.aspect = width / height;
     this.camera.updateProjectionMatrix();
   }
 }
