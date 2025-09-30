@@ -8,7 +8,8 @@ const TERRAIN_HEIGHT = {
   forest: 1.2,
   mountain: 3.4,
   town: 1.1,
-  ruin: 1.6
+  ruin: 1.6,
+  water: 0.4
 };
 
 const TREE_PRESETS = [
@@ -176,6 +177,11 @@ export class Renderer3D {
         const worldX = x * TILE_SIZE - offsetX;
         const worldZ = y * TILE_SIZE - offsetZ;
 
+        if (tileKey === 'water') {
+          mesh.material.roughness = 0.25;
+          mesh.material.metalness = 0.55;
+        }
+
         mesh.position.set(worldX, 0, worldZ);
         mesh.receiveShadow = true;
         mesh.castShadow = false;
@@ -203,6 +209,8 @@ export class Renderer3D {
           this.decoratePlain(record.position, height);
         } else if (tileKey === 'road') {
           this.decorateRoad(record.position, height);
+        } else if (tileKey === 'water') {
+          this.addWater(record.position, height);
         }
       });
     });
@@ -343,6 +351,67 @@ export class Renderer3D {
     this.decorationGroup.add(ruin);
   }
 
+  addWater(position, tileHeight) {
+    const group = new THREE.Group();
+
+    const shoreline = new THREE.Mesh(
+      new THREE.PlaneGeometry(TILE_SIZE * 0.96, TILE_SIZE * 0.96, 1, 1),
+      new THREE.MeshStandardMaterial({ color: 0x9c8f68, roughness: 0.95 })
+    );
+    shoreline.rotation.x = -Math.PI / 2;
+    shoreline.position.y = tileHeight - 0.02;
+    shoreline.receiveShadow = true;
+    group.add(shoreline);
+
+    const waterSurface = new THREE.Mesh(
+      new THREE.PlaneGeometry(TILE_SIZE * 0.9, TILE_SIZE * 0.9, 1, 1),
+      new THREE.MeshStandardMaterial({
+        color: 0x2a6dbc,
+        roughness: 0.18,
+        metalness: 0.55,
+        transparent: true,
+        opacity: 0.88,
+        side: THREE.DoubleSide
+      })
+    );
+    waterSurface.rotation.x = -Math.PI / 2;
+    waterSurface.position.y = tileHeight + 0.02;
+    waterSurface.receiveShadow = true;
+    group.add(waterSurface);
+
+    const shimmer = new THREE.Mesh(
+      new THREE.PlaneGeometry(TILE_SIZE * 0.68, TILE_SIZE * 0.68, 1, 1),
+      new THREE.MeshStandardMaterial({
+        color: 0xc2e5ff,
+        roughness: 0.2,
+        metalness: 0.3,
+        transparent: true,
+        opacity: 0.25,
+        side: THREE.DoubleSide
+      })
+    );
+    shimmer.rotation.x = -Math.PI / 2;
+    shimmer.rotation.z = Math.PI / 7;
+    shimmer.position.y = tileHeight + 0.03;
+    group.add(shimmer);
+
+    if (Math.random() < 0.6) {
+      const reeds = this.createReedBundle();
+      reeds.position.set((Math.random() - 0.5) * TILE_SIZE * 0.4, tileHeight + 0.01, TILE_SIZE * 0.34 * (Math.random() * 0.6 - 0.2));
+      group.add(reeds);
+    }
+
+    if (Math.random() < 0.45) {
+      const boat = this.createRowboat();
+      boat.position.set((Math.random() - 0.5) * TILE_SIZE * 0.35, tileHeight + 0.04, (Math.random() - 0.5) * TILE_SIZE * 0.35);
+      boat.rotation.y = Math.random() * Math.PI * 2;
+      group.add(boat);
+    }
+
+    group.position.copy(position);
+    this.decorationGroup.add(group);
+  }
+
   decoratePlain(position, tileHeight) {
     const group = new THREE.Group();
 
@@ -448,6 +517,82 @@ export class Renderer3D {
     bush.scale.set(1.2, 0.8, 1.1);
     bush.position.y = 0.4 * preset.scale;
     group.add(bush);
+    return group;
+  }
+
+  createReedBundle() {
+    const group = new THREE.Group();
+    const bandMaterial = new THREE.MeshStandardMaterial({ color: 0xa5772c, roughness: 0.8 });
+
+    for (let i = 0; i < 6; i++) {
+      const height = 0.7 + Math.random() * 0.35;
+      const reed = new THREE.Mesh(
+        new THREE.CylinderGeometry(0.02, 0.05, height, 5),
+        new THREE.MeshStandardMaterial({ color: 0x5d7f36, roughness: 0.75 })
+      );
+      reed.position.set((Math.random() - 0.5) * 0.5, height / 2, (Math.random() - 0.5) * 0.5);
+      reed.rotation.z = (Math.random() - 0.5) * 0.35;
+      reed.castShadow = true;
+      reed.receiveShadow = true;
+      group.add(reed);
+    }
+
+    const band = new THREE.Mesh(new THREE.CylinderGeometry(0.15, 0.15, 0.08, 8), bandMaterial);
+    band.position.y = 0.25;
+    band.receiveShadow = true;
+    group.add(band);
+
+    return group;
+  }
+
+  createRowboat() {
+    const group = new THREE.Group();
+    const hullMaterial = new THREE.MeshStandardMaterial({ color: 0x5f3c1f, roughness: 0.7 });
+
+    const base = new THREE.Mesh(new THREE.BoxGeometry(1.6, 0.18, 0.58), hullMaterial);
+    base.position.y = 0.12;
+    base.castShadow = true;
+    base.receiveShadow = true;
+    group.add(base);
+
+    const bow = new THREE.Mesh(new THREE.ConeGeometry(0.32, 0.6, 4), hullMaterial);
+    bow.rotation.z = Math.PI / 2;
+    bow.position.set(0.82, 0.18, 0);
+    bow.castShadow = true;
+    bow.receiveShadow = true;
+    group.add(bow);
+
+    const stern = new THREE.Mesh(new THREE.ConeGeometry(0.32, 0.6, 4), hullMaterial);
+    stern.rotation.z = -Math.PI / 2;
+    stern.position.set(-0.82, 0.18, 0);
+    stern.castShadow = true;
+    stern.receiveShadow = true;
+    group.add(stern);
+
+    const seatMaterial = new THREE.MeshStandardMaterial({ color: 0xc9ad70, roughness: 0.6 });
+    const seat = new THREE.Mesh(new THREE.BoxGeometry(0.45, 0.12, 0.5), seatMaterial);
+    seat.position.y = 0.24;
+    seat.castShadow = true;
+    seat.receiveShadow = true;
+    group.add(seat);
+
+    const oarMaterial = new THREE.MeshStandardMaterial({ color: 0xd8b170, roughness: 0.6 });
+    [-1, 1].forEach((side) => {
+      const handle = new THREE.Mesh(new THREE.CylinderGeometry(0.03, 0.03, 1.2, 6), oarMaterial);
+      handle.rotation.z = Math.PI / 2;
+      handle.position.set(0, 0.26, 0.36 * side);
+      handle.castShadow = true;
+      handle.receiveShadow = true;
+      group.add(handle);
+
+      const paddle = new THREE.Mesh(new THREE.BoxGeometry(0.14, 0.02, 0.28), oarMaterial);
+      paddle.position.set(0.6, 0.26, 0.36 * side);
+      paddle.rotation.y = (Math.PI / 7) * side;
+      paddle.castShadow = true;
+      paddle.receiveShadow = true;
+      group.add(paddle);
+    });
+
     return group;
   }
 
