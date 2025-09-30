@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Frontier Valley</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div id="ui">
+      <header>
+        <div class="title-block">
+          <h1>Frontier Valley</h1>
+          <p>
+            Inspired by the Aventurian tales of <em>Sternenschweif</em>, wander the
+            Svellt Valley, befriend its creatures, and gather legendary gear for
+            your party.
+          </p>
+        </div>
+        <div class="header-actions">
+          <button id="music-toggle" class="control-button">Play Ballad</button>
+          <button id="help-toggle" class="control-button">Help</button>
+        </div>
+      </header>
+      <section id="interaction-panel" class="panel hidden">
+        <div class="interaction-header">
+          <h2 id="interaction-title"></h2>
+          <span id="interaction-greeting" class="interaction-greeting"></span>
+        </div>
+        <p id="interaction-description"></p>
+        <div id="loot-preview" class="loot-preview hidden">
+          <div id="loot-icon" class="loot-icon"></div>
+          <div class="loot-details">
+            <p id="loot-name" class="loot-name"></p>
+            <p id="loot-type" class="loot-type"></p>
+          </div>
+        </div>
+        <p id="loot-lore" class="loot-lore"></p>
+        <button id="collect-button">Collect Tribute</button>
+      </section>
+      <section id="inventory" class="panel backpack">
+        <h2>Travel Backpack</h2>
+        <p class="inventory-intro">
+          Slots for weapons, shields, salves, and curiosities gathered across
+          Aventuria.
+        </p>
+        <div class="backpack-body">
+          <div class="backpack-lid"></div>
+          <ul id="inventory-grid" class="slot-grid"></ul>
+        </div>
+      </section>
+      <footer>
+        <p>
+          Left click animals to interact • Scroll to zoom • Drag to look around •
+          Press <span class="key">H</span> or use the Help button for tips.
+        </p>
+      </footer>
+    </div>
+    <div id="help-overlay" class="hidden">
+      <div class="help-content">
+        <h2>Adventuring Tips</h2>
+        <ul>
+          <li>
+            Legendary beasts echo the bestiary of <em>Sternenschweif</em>. Offer
+            patience, then claim their tribute.
+          </li>
+          <li>
+            The valley's slopes hide herbs and minerals for future crafting
+            systems.
+          </li>
+          <li>
+            Watch the skies and weather; dusk light guides you back to camp.
+          </li>
+        </ul>
+        <button id="close-help">Close</button>
+      </div>
+    </div>
+    <div id="world"></div>
+    <audio
+      id="bg-music"
+      preload="auto"
+      loop
+      src="https://cdn.pixabay.com/download/audio/2022/08/12/audio_04c137853e.mp3?filename=dreams-of-ancient-trees-116199.mp3"
+    ></audio>
+    <script type="module" src="main.js"></script>
+  </body>
+</html>
