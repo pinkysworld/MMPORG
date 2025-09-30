@@ -20,7 +20,8 @@ const encounterTable = {
   town: [],
   ruin: [
     { name: 'Sternenklingen-Wächter', threat: 4, le: 35, at: 13, pa: 10, initiative: 12 }
-  ]
+  ],
+  water: []
 };
 
 const baseQuests = [
@@ -48,7 +49,7 @@ export class GameState {
       hero.combat.maxLebensenergie = hero.combat.lebensenergie;
       hero.combat.maxAstralenergie = hero.combat.astralenergie;
     });
-    this.position = { x: 4, y: 3 };
+    this.position = { x: 9, y: 4 };
     this.mode = 'exploration';
     this.logEntries = [];
     this.timeOfDay = 10;
