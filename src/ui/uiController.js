@@ -117,7 +117,7 @@ export class UIController {
     header.innerHTML = `<strong>${actor.name}</strong> ist am Zug.`;
     this.elements.actions.appendChild(header);
 
-    const enemies = state.encounter?.members || [];
+    const enemies = state.encounter && state.encounter.members ? state.encounter.members : [];
 
     const attackButton = document.createElement('button');
     attackButton.textContent = 'Angreifen';

@@ -156,7 +156,7 @@ class Game {
 
   onCombatUpdate(state) {
     this.refreshUI(state);
-    if (state?.finished) {
+    if (state && state.finished) {
       setTimeout(() => {
         this.exitCombat();
       }, 800);
